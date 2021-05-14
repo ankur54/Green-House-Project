@@ -1,0 +1,74 @@
+%%%%Air General Parameters usually constant%%%%
+%Density of dry air (Kg/m^3)
+pa = 1.137;
+%Specific Heat of Air(J/Kg.K)
+Ca = 1005;
+
+%%%%Cover Parameters (Polyethylene Used here)%%%%
+%Cover absorptivity of solar radiation
+ac =0.1;
+%Cover transmittance 
+tc = 0.85;
+
+%%%%Outdoor params canbe changed according to location%%%%
+%Solar Radiation 
+I = 200;
+%Wind Velocity(m/sec)
+Vw = 1;
+%Average Temprature outside(°C)
+To = 10;
+%Initial internal temprature(°C)
+Ti = 20;
+%Outside Relative Humidity
+Hout = 60;
+
+%%%%Greenhouse Size params%%%%
+%Length of GreenHouse(m)
+len = 20;
+%Width of greenhouse(m)
+wid = 10;
+%Height of GreenHouse(m)[without Roof]
+heig = 3;
+%Roof angle from Horizontal(degrees)
+angle = 40;
+%Angle in radian
+angRad = angle*pi/180;
+%Volume of greenhouse
+Vol = len*wid*heig+0.5*wid*((wid/2)*tan(angRad))*len;
+%Average Height of room
+H = Vol/(len*wid);
+%Mass of Air in greenHouse
+M = pa*Vol;
+%Surface area of Greenhouse(m^2)
+S = 2*(len*heig+wid*heig)+wid*((wid/2)*tan(angRad))+2*(((wid/2)/cos(angRad))*len);
+%Number of air changes per hour
+R = 5;
+%Heating Coil Temprature(°C)
+THeater = 50;
+%Air mass flow rate from Heater(Kg/sec)
+Mdot = 1;
+
+%Cover K(W/m.K)(polyethylene)
+Kc = 0.028;
+%Cover Thickness (m)
+Lc = 0.03;
+%Vertical Section of greenhouse
+Sc = 2*(len*heig+wid*heig);
+%Area of Ventilation(m^2)
+Av = 2.2;
+%Slope of Curve showing the Ventilation flux divided byWind Speed Variation
+Kv = 0.7;
+%percent of Ventilation opening
+rv = 0.5;
+%Heat transfer coefficient of outside greenhouse cover
+ho=2.8+1.2*Vw;
+%Heat transfer coefficient of inside greenhouse cover
+hi = 1.52*(abs(Ti-To)^(1/3))+5.2*(R/(Sc*len))^0.5;
+
+%Dehumidifier Model
+mairdot = 1;%Air in flow rate in dehumidifier
+mwaterdot = 0.1;%Cold water in flow rate
+Twi = To;%Temperature of water going in Dehumidifier
+
+%simulate in simulink
+sim('GreenHouseModel.slx');
